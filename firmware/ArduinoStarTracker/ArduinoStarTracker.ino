@@ -26,6 +26,11 @@ void loop() {
   update_control();
 }
 
+int32_t sign( double x ){
+  if(x >= 0){ return 1; }
+  return -1;
+}
+
 void update_control( void ){
 //  if(enc_isr){
 //    enc_isr = false;
@@ -70,12 +75,16 @@ void update_control( void ){
     actual_pos += delta_pulses;
 
     // calculate the errors
+    
     double error_pps = actual_pps - target_pps;
+    static double prev_error_pos = 0;
     double error_pos = actual_pos - target_pos;
+    double error_pos_velocity = error_pos - prev_error_pos;
+    prev_error_pos = error_pos;
 
 
     // make changes to motor speed based on errors
-    int32_t delta_speed = (int32_t)(-0.1 * error_pos);
+    int32_t delta_speed = (int32_t)(-0.1 * error_pos) + (int32_t)(-3.0*error_pos_velocity);
 
     gearmotor_adjust_speed(delta_speed);
 
