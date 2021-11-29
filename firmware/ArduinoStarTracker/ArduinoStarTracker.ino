@@ -3,7 +3,7 @@
 #include "timebase.h"
 
 #define SERIAL_PORT Serial
-#define FORMAT_PLOTTER 1
+#define FORMAT_PLOTTER 0
 
 #define CONTROL_PERIOD_US (100000)
 
